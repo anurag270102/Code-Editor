@@ -1,0 +1,87 @@
+.homePageWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: aliceblue;
+  height: 100vh;
+}
+
+.fromWrapper {
+  background: #000;
+  padding: 20px;
+  border-radius: 10px;
+  width: 365px;
+  max-width: 90%;
+}
+
+footer {
+  position: fixed;
+  bottom: 0;
+}
+
+footer a {
+  color: #03FA6E;
+}
+
+.inputgroup {
+  display: flex;
+  flex-direction: column;
+}
+
+.mainlable {
+  margin-bottom: 20px;
+  margin-top: 0px;
+}
+
+.logo {
+  height: 351px;
+  margin-bottom: -30px;
+}
+
+.inputbox {
+  padding: 10px;
+  border-radius: 5px;
+  outline: none;
+  border: none;
+  margin-bottom: 14px;
+  background: #cfcfcf;
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.btn {
+  border: none;
+  padding: 10px;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+}
+
+.joinbtn {
+  background: #03FA6E;
+  width: 100px;
+  margin-left: 72%;
+}
+
+.joinbtn:hover {
+  background: #01c355;
+}
+
+.createInfo {
+  margin: 0 auto;
+  margin-top: 20px;
+}
+
+.createnewbtn {
+  color: #03FA6E;
+  text-decoration: none;
+  border-bottom: 1px solid #03FA6E;
+  transition: all 0.3s ease-in-out;
+}
+
+.createnewbtn:hover,
+footer a:hover {
+  color: #01c355;
+  border-color: #01c355;
+}
