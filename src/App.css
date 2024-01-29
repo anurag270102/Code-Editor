@@ -35,7 +35,6 @@ footer a {
 
 .logo {
   height: 351px;
-  margin-bottom: -30px;
 }
 
 .inputbox {
@@ -64,7 +63,7 @@ footer a {
   margin-left: 72%;
 }
 
-.joinbtn:hover {
+.joinbtn:hover,.leavebtn:hover {
   background: #01c355;
 }
 
@@ -84,4 +83,67 @@ footer a {
 footer a:hover {
   color: #01c355;
   border-color: #01c355;
+}
+
+.mainwrap{
+  display: grid;
+  grid-template-columns: 230px 1fr;
+  
+}
+.aside{
+  background: #000;
+  padding: 16px;
+  color: white;
+  display: flex;
+  flex-direction: column;
+}
+.asideinner{
+flex: 1;
+}
+.clientlist{
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+.client{
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+.username{
+  margin-top: 10px;
+}
+.logoeditor{
+  border-bottom: 1px solid #424242;
+  padding-bottom:10px;
+}
+.logoimage{
+  height: 100px;
+}
+.mainheading{
+  padding: 0;
+  margin: 0;
+  margin-bottom: 15px;
+  font-weight: bold;
+}
+.subheading{
+  color: #01c355;
+  margin: 0;
+  padding: 0;
+  font-family:cursive;
+}
+.leavebtn{
+  margin-top: 20px;
+  background: #03FA6E;
+  font-weight: bold;
+}
+.copybtn{
+  font-weight: bold;
+}
+.CodeMirror{
+  min-height: calc(100vh - 20px);
+  font-size: 20px;
+  line-height: 1.6;
+  padding-top: 20px;
 }
