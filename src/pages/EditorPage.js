@@ -12,38 +12,68 @@ const EditorHome = () => {
     const navigate = useNavigate();
     const location = useLocation();
     const socketRef = useRef();
-    const {roomId} =useParams();
-    //if change occure in data then component not rerednder that why use useref()
+    const { roomId } = useParams();
+    const [clients, setclients] = useState([]);
+
     useEffect(() => {
-        async function init() {
-            socketRef.current = await initSocket();
-            socketRef.current.on('connect_error', (err) => handleErrors(err));
-            socketRef.current.on('connect_failed', (err) => handleErrors(err));
+        const init = async () => {
+            try {
+                socketRef.current = await initSocket();
+                socketRef.current.on('connect_error', (err) => handleErrors(err));
+                socketRef.current.on('connect_failed', (err) => handleErrors(err));
 
-            function handleErrors(e) {
-                console.log('socket error', e);
-                toast.error('Socket connection failed. try again later.');
-                navigate('/');
+                socketRef.current.emit(ACTIONS.JOIN, {
+                    roomId,
+                    username: location.state?.username,
+                });
+
+                // Move the 'on' listener for 'JOINED' inside the 'init' function
+                socketRef.current.on(ACTIONS.JOINED, ({ clients, username, socketId }) => {
+                    if (username !== location.state?.username) {
+                        toast.success(`${username} joined in the room`);
+                        console.log(`${username} joined`);
+                    }
+                    setclients(clients);
+                });
+
+                // Move the 'on' listener for 'DISCONNECTED' inside the 'init' function
+                socketRef.current.on(ACTIONS.DISCONNECTED, ({ socketId, username }) => {
+                    toast.success(`${username} left the room`);
+                    setclients((prev) => {
+                        return prev.filter((client) => client.socketId !== socketId);
+                    });
+                });
+
+            } catch (error) {
+                console.error('Error initializing socket:', error);
+                handleErrors(error);
             }
-            socketRef.current.emit(ACTIONS.JOIN, {
-                roomId,
-                username: location.state?.username,
-            });
         };
-        
-            init();
-        
-    },[]);
 
-    const [clients,] = useState([
-        { socketId: 1, username: 'anurag d' },
-        { socketId: 2, username: 'manav d' },
-    ]);
+        const handleErrors = (e) => {
+            console.log('socket error', e);
+            toast.error('Socket connection failed. try again later.');
+            navigate('/');
+        };
+
+        
+        
+        return () => {
+            init();
+            // Cleanup listeners when the component unmounts
+            if (socketRef.current) {
+                socketRef.current.off(ACTIONS.JOINED);
+                socketRef.current.off(ACTIONS.DISCONNECTED);
+                socketRef.current.disconnect();
+            }
+        };
+    }, [roomId, location.state?.username, navigate]);
+
     if (!location.state) {
-       return <Navigate to={'/'} ></Navigate>
+        return <Navigate to={'/'} />;
     }
 
-    return ([
+    return (
         <div className="mainwrap">
             <div className="aside">
                 <div className="asideinner">
@@ -67,6 +97,7 @@ const EditorHome = () => {
                 <Editor></Editor>
             </div>
         </div>
-    ]);
-}
+    );
+};
+
 export default EditorHome;

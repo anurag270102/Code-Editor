@@ -1,42 +1,43 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useRef } from "react";
 import Codemirror from 'codemirror';
 import 'codemirror/lib/codemirror.css';
 import 'codemirror/mode/javascript/javascript';
 import 'codemirror/theme/dracula.css';
 import 'codemirror/addon/edit/closetag';
 import 'codemirror/addon/edit/closebrackets';
+import ACTIONS from "../action";
 
 const Editor = () => {
-    const [id, setid] = useState('realtimeeditor');
+    const editorRef = useRef(null);
+    
     useEffect(() => {
-
-        const init = async () => {
+        const init = () => {
             console.log('called');
-            console.log(`${id}`);
-            Codemirror.fromTextArea(
-            document.getElementById(`${id}`), 
-            {
-                mode: { name: "javascript", json: true },
-                theme: 'dracula',
-                autoCloseTags: true,
-                autoCloseBrackets: true,
-                lineNumbers: true
-            });
-        }
-        init();
+             editorRef.current = Codemirror.fromTextArea(
+                document.getElementById('realtimeeditor'), 
+                {
+                    mode: { name: "javascript", json: true },
+                    theme: 'dracula',
+                    autoCloseTags: true,
+                    autoCloseBrackets: true,
+                    lineNumbers: true
+                }
+            );
+            editorRef.current.on('change',(instance,change)=>{
+                // const {origin}
+            })
+        };
+
+        init(); // Initialize the CodeMirror editor when the component mounts
+        // Cleanup function
         return () => {
-            console.log(
-                document.getElementById('realtimeeditor'));
-            const elementToRemove= document.getElementById('realtimeeditor');
-            if (elementToRemove) {
-                elementToRemove.remove();
+            if (editorRef.current) {
+                editorRef.current.toTextArea(); // Convert the CodeMirror instance back to a textarea during unmount
             }
-            
-           
-        }
-
+        };
     }, []);
-    return <textarea id={`${id}`}></textarea>
 
-}
+    return <textarea id='realtimeeditor'></textarea>;
+};
+
 export default Editor;
