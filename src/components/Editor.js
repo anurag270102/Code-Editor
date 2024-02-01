@@ -7,14 +7,14 @@ import 'codemirror/addon/edit/closetag';
 import 'codemirror/addon/edit/closebrackets';
 import ACTIONS from "../action";
 
-const Editor = () => {
+
+const Editor = ({ socketRef, roomId }) => {
     const editorRef = useRef(null);
-    
     useEffect(() => {
         const init = () => {
             console.log('called');
-             editorRef.current = Codemirror.fromTextArea(
-                document.getElementById('realtimeeditor'), 
+            editorRef.current = Codemirror.fromTextArea(
+                document.getElementById('realtimeeditor'),
                 {
                     mode: { name: "javascript", json: true },
                     theme: 'dracula',
@@ -23,9 +23,19 @@ const Editor = () => {
                     lineNumbers: true
                 }
             );
-            editorRef.current.on('change',(instance,change)=>{
-                // const {origin}
+            
+            editorRef.current.on('change', (instance, changes) => {
+                const { origin } = changes;
+                const code = instance.getValue();
+                if (!origin !== 'setValue') {
+                    socketRef.current.emit(ACTIONS.CODE_CHANGE, {
+                        roomId,
+                        code,
+                    })
+                }
             })
+
+            // 
         };
 
         init(); // Initialize the CodeMirror editor when the component mounts
@@ -35,9 +45,20 @@ const Editor = () => {
                 editorRef.current.toTextArea(); // Convert the CodeMirror instance back to a textarea during unmount
             }
         };
-    }, []);
+    }, [roomId, socketRef]);
 
-    return <textarea id='realtimeeditor'></textarea>;
+    useEffect(()=>{
+        if(socketRef.current){
+            
+                socketRef.current.on(ACTIONS.CODE_CHANGE, ({ code }) => {
+                    console.log(code);
+                    if (code !== null) {
+                        editorRef.current.setValue(code);
+                    }
+                })
+        }
+    },[socketRef.current])
+    return <textarea id='realtimeeditor' onChange={(e)=>{console.log(e.target.va);}}></textarea>;
 };
 
 export default Editor;

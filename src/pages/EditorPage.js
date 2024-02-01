@@ -94,7 +94,7 @@ const EditorHome = () => {
                 <button className="btn leavebtn">Leave</button>
             </div>
             <div className="editorpage">
-                <Editor></Editor>
+                <Editor socketRef={socketRef} roomId={roomId} ></Editor>
             </div>
         </div>
     );
