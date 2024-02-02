@@ -7,11 +7,11 @@ import 'codemirror/addon/edit/closetag';
 import 'codemirror/addon/edit/closebrackets';
 import ACTIONS from "../action";
 
-
 const Editor = ({ socketRef, roomId }) => {
     const editorRef = useRef(null);
+
     useEffect(() => {
-        const init = () => {
+        const initEditor = () => {
             console.log('called');
             editorRef.current = Codemirror.fromTextArea(
                 document.getElementById('realtimeeditor'),
@@ -23,42 +23,54 @@ const Editor = ({ socketRef, roomId }) => {
                     lineNumbers: true
                 }
             );
-            
-            editorRef.current.on('change', (instance, changes) => {
+
+            const handleChange = (instance, changes) => {
                 const { origin } = changes;
                 const code = instance.getValue();
-                if (!origin !== 'setValue') {
+                if (origin !== 'setValue') {
                     socketRef.current.emit(ACTIONS.CODE_CHANGE, {
                         roomId,
                         code,
-                    })
+                    });
                 }
-            })
+            };
 
-            // 
-        };
+            editorRef.current.on('change', handleChange);
 
-        init(); // Initialize the CodeMirror editor when the component mounts
-        // Cleanup function
-        return () => {
-            if (editorRef.current) {
-                editorRef.current.toTextArea(); // Convert the CodeMirror instance back to a textarea during unmount
-            }
+            return () => {
+                if (editorRef.current) {
+                    editorRef.current.off('change', handleChange);
+                    editorRef.current.toTextArea();
+                }
+            };
         };
+        return (() => {
+            initEditor();
+        })
+
+
+
     }, [roomId, socketRef]);
 
-    useEffect(()=>{
-        if(socketRef.current){
-            
-                socketRef.current.on(ACTIONS.CODE_CHANGE, ({ code }) => {
-                    console.log(code);
-                    if (code !== null) {
-                        editorRef.current.setValue(code);
-                    }
-                })
+    useEffect(() => {
+       
+        if (socketRef.current) {
+            console.log(ACTIONS.CODE_CHANGE);
+            socketRef.current.on(ACTIONS.CODE_CHANGE, ({e}) => {
+                console.log(e);
+                // if (code !== null) {
+                //     editorRef.current.setValue(code);
+                // }
+            });
         }
-    },[socketRef.current])
-    return <textarea id='realtimeeditor' onChange={(e)=>{console.log(e.target.va);}}></textarea>;
+        return(()=>{
+            if(socketRef.current){
+                socketRef.current.disconnect();
+            }
+        })
+    },[]);
+
+    return <textarea id='realtimeeditor'></textarea>;
 };
 
 export default Editor;

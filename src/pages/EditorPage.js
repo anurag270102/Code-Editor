@@ -67,7 +67,7 @@ const EditorHome = () => {
                 socketRef.current.disconnect();
             }
         };
-    }, [roomId, location.state?.username, navigate]);
+    }, []);
 
     if (!location.state) {
         return <Navigate to={'/'} />;
