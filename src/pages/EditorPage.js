@@ -43,7 +43,12 @@ const EditorHome = () => {
                         return prev.filter((client) => client.socketId !== socketId);
                     });
                 });
-
+                socketRef.current.on(ACTIONS.DISCONNECTED,({ socketId, username }) => {
+                        toast.success(`${username} left the room.`);
+                        setclients((prev) => {
+                            return prev.filter((client) => client.socketId !== socketId);
+                        });
+                });
             } catch (error) {
                 console.error('Error initializing socket:', error);
                 handleErrors(error);
@@ -56,10 +61,10 @@ const EditorHome = () => {
             navigate('/');
         };
 
-        
-        
+
+        init();
         return () => {
-            init();
+
             // Cleanup listeners when the component unmounts
             if (socketRef.current) {
                 socketRef.current.off(ACTIONS.JOINED);
