@@ -10,8 +10,18 @@ import ACTIONS from "../action";
 const Editor = ({ socketRef, roomId }) => {
     const editorRef = useRef(null);
     const [a, seta] = useState(true);
-    useEffect(() => {
+    const handleChange = (instance, changes) => {
+        const { origin } = changes;
+        const code = instance.getValue();
+        if (origin !== 'setValue') {
+            socketRef.current.emit(ACTIONS.CODE_CHANGE, {
+                roomId,
+                code,
+            });
+        }
+    };
 
+    useEffect(() => {
         const initEditor = () => {
             console.log('called');
             const textarea = document.getElementById('realtimeeditor');
@@ -28,36 +38,26 @@ const Editor = ({ socketRef, roomId }) => {
                 );
                 seta(false);
             }
-            const handleChange = (instance, changes) => {
-                const { origin } = changes;
-                const code = instance.getValue();
-                if (origin !== 'setValue') {
-                    socketRef.current.emit(ACTIONS.CODE_CHANGE, {
-                        roomId,
-                        code,
-                    });
-                }
-            };
             editorRef.current.on('change', handleChange);
-
             if (socketRef.current) {
                 socketRef.current.on(ACTIONS.CODE_CHANGE, ({ code }) => {
+                    console.log(code);
                     if (code !== null) {
                         editorRef.current.setValue(code);
                     }
                 });
             }
         };
-
-        return (() => {initEditor();
+    initEditor();
+        return (() => {
+            
             if (socketRef.current) {
-                
                 socketRef.current.off(ACTIONS.JOINED);
                 socketRef.current.off(ACTIONS.DISCONNECTED);
                 // socketRef.current.disconnect();
             }
         })
-    },);
+    }, []);
     return <textarea id='realtimeeditor' name=""></textarea>;
 };
 
