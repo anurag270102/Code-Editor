@@ -21,7 +21,6 @@ const EditorHome = () => {
                 socketRef.current = await initSocket();
                 socketRef.current.on('connect_error', (err) => handleErrors(err));
                 socketRef.current.on('connect_failed', (err) => handleErrors(err));
-
                 socketRef.current.emit(ACTIONS.JOIN, {
                     roomId,
                     username: location.state?.username,
@@ -54,16 +53,13 @@ const EditorHome = () => {
             toast.error('Socket connection failed. try again later.');
             navigate('/');
         };
-
-
         init();
         return () => {
-            
             // Cleanup listeners when the component unmounts
             if (socketRef.current) {
                 socketRef.current.off(ACTIONS.JOINED);
                 socketRef.current.off(ACTIONS.DISCONNECTED);
-                socketRef.current.disconnect();
+                // socketRef.current.disconnect();
             }
         };
     },[]);
@@ -92,6 +88,7 @@ const EditorHome = () => {
                 <button className="btn leavebtn">Leave</button>
             </div>
             <div className="editorpage">
+                {/* {console.log(socketRef)} */}
                 <Editor socketRef={socketRef} roomId={roomId} ></Editor>
             </div>
         </div>
