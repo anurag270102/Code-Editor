@@ -14,6 +14,7 @@ const EditorHome = () => {
     const socketRef = useRef();
     const { roomId } = useParams();
     const [clients, setclients] = useState([]);
+    const codeRef = useRef(null);
 
     useEffect(() => {
         const init = async () => {
@@ -27,16 +28,21 @@ const EditorHome = () => {
                 });
 
                 // Move the 'on' listener for 'JOINED' inside the 'init' function
-                socketRef.current.on(ACTIONS.JOINED, ({ clients, username, socketId }) => {
+                await socketRef.current.on(ACTIONS.JOINED, ({ clients, username, socketId }) => {
                     if (username !== location.state?.username) {
                         toast.success(`${username} joined in the room`);
                         console.log(`${username} joined`);
                     }
+
                     setclients(clients);
+                    socketRef.current.emit(ACTIONS.SYNC_CODE, {
+                        code: codeRef.current,
+                        socketId
+                    })
                 });
 
                 // Move the 'on' listener for 'DISCONNECTED' inside the 'init' function
-                socketRef.current.on(ACTIONS.DISCONNECTED, ({ socketId, username }) => {
+                await socketRef.current.on(ACTIONS.DISCONNECTED, ({ socketId, username }) => {
                     toast.success(`${username} left the room`);
                     setclients((prev) => {
                         return prev.filter((client) => client.socketId !== socketId);
@@ -62,14 +68,30 @@ const EditorHome = () => {
                 // socketRef.current.disconnect();
             }
         };
-    },[]);
+    }, []);
 
     if (!location.state) {
         return <Navigate to={'/'} />;
     }
+    async function copyRoomID() {
+        try {
+            await navigator.clipboard.writeText(roomId);
+            toast.success('RoomID has Been copied to your ClipBoard');
+        } catch (error) {
+            console.log(error);
+            toast.error('Error to copied RoomID');
+            console.log(error);
+        }
+    }
+    function LeaveRoom() {
+        navigate('/');
+    }
+
+
+
     return (
         <div className="mainwrap">
-            <div className="aside">
+            <div className={"aside"}>
                 <div className="asideinner">
                     <div className="logoeditor">
                         <h1 className="mainheading">StreamCode</h1>
@@ -84,12 +106,19 @@ const EditorHome = () => {
                         }
                     </div>
                 </div>
-                <button className="btn copybtn">Copy Room ID</button>
-                <button className="btn leavebtn">Leave</button>
+                <button className="btn runbtn" >
+                    <h2 className="btn_run_content">Run
+                    <svg class="play-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                        <path d="M8 5v14l11-7z" />
+                    </svg>
+                    </h2>
+                    
+                </button>
+                <button className="btn copybtn" onClick={copyRoomID}>Copy Room ID</button>
+                <button className="btn leavebtn" onClick={LeaveRoom}>Leave</button>
             </div>
             <div className="editorpage">
-                {/* {console.log(socketRef)} */}
-                <Editor socketRef={socketRef} roomId={roomId} ></Editor>
+                <Editor socketRef={socketRef} roomId={roomId} oncodechange={(code) => { codeRef.current = code }}></Editor>
             </div>
         </div>
     );

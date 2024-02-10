@@ -23,23 +23,28 @@ function getsallconnectedclients(roomId) {
     );
 }
 
-io.on('connection', (socket) => {
+ io.on('connection', async (socket) => {
     console.log('socket connected', socket.id);
-    socket.on(ACTIONS.JOIN, ({ roomId, username }) => {
-        userSocketMap[socket.id] = username;
-        socket.join(roomId);
-        const clients = getsallconnectedclients(roomId);
-        clients.forEach(({ socketId }) => {
-            io.to(socketId).emit(ACTIONS.JOINED, {
-                clients,
-                username,
-                socketId: socket.id,
-            });
-        });
-    });
+   socket.on(ACTIONS.JOIN, ({ roomId, username }) => {
+         userSocketMap[socket.id] = username;
+         socket.join(roomId);
+         const clients = getsallconnectedclients(roomId);
+         clients.forEach(({ socketId }) => {
+             io.to(socketId).emit(ACTIONS.JOINED, {
+                 clients,
+                 username,
+                 socketId: socket.id,
+             });
+         });
+     });
 
     socket.on(ACTIONS.CODE_CHANGE, ({ roomId, code }) => {
-        socket.to(roomId).emit(ACTIONS.CODE_CHANGE, { code });
+        // console.log(code);
+        socket.to(roomId).emit(ACTIONS.CODE_CHANGE, { code });  
+    });
+    socket.on(ACTIONS.SYNC_CODE, ({ socketId, code }) => {
+        // console.log(code);
+       io.to(socketId).emit(ACTIONS.SYNC_CODE, { code });  
     });
 
     socket.on('disconnecting', () => {
