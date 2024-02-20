@@ -107,9 +107,10 @@ footer a:hover {
 .clientlist {
   display: flex;
   align-items: center;
+  justify-content: center;
   flex-wrap: wrap;
   gap: 20px;
-  overflow-y: scroll;
+  overflow-y: hidden;
 }
 
 .client {
@@ -223,4 +224,31 @@ footer a:hover {
 .clientlist {
   margin-bottom: 20px;
   /* adjust margin as needed */
+}
+.output{
+  display: none;
+}
+.output_show{
+  display: block;
+  background: linear-gradient(in hsl longer hue, white, gray);
+  height: 120px;
+  color: #3f3f3f;
+  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+  font-size: medium;
+  letter-spacing: 1px;
+  /* overflow-x: hidden; */
+  width: 100%;
+  overflow: hidden;
+  display: flex;
+}
+.output_heading{
+  font-size: 30px;
+  text-align: center;
+  color: #01c355;
+  letter-spacing: normal;
+  transition: all 2s ease-in;
+}
+.output_show:focus{
+  outline: none;
+  border: none;
 }

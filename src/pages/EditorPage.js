@@ -15,7 +15,7 @@ const EditorHome = () => {
     const { roomId } = useParams();
     const [clients, setclients] = useState([]);
     const codeRef = useRef(null);
-
+    const [output, setoutput] = useState(false);
     useEffect(() => {
         const init = async () => {
             try {
@@ -89,6 +89,7 @@ const EditorHome = () => {
 
 
 
+
     return (
         <div className="mainwrap">
             <div className={"aside"}>
@@ -106,19 +107,23 @@ const EditorHome = () => {
                         }
                     </div>
                 </div>
-                <button className="btn runbtn" >
+                <button className="btn runbtn" onClick={() => { setoutput(!output) }} >
                     <h2 className="btn_run_content">Run
-                    <svg class="play-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                        <path d="M8 5v14l11-7z" />
-                    </svg>
+                        <svg class="play-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                            <path d="M8 5v14l11-7z" />
+                        </svg>
                     </h2>
-                    
+
                 </button>
                 <button className="btn copybtn" onClick={copyRoomID}>Copy Room ID</button>
                 <button className="btn leavebtn" onClick={LeaveRoom}>Leave</button>
             </div>
             <div className="editorpage">
                 <Editor socketRef={socketRef} roomId={roomId} oncodechange={(code) => { codeRef.current = code }}></Editor>
+            </div>
+             <h4 className="output_heading">output</h4>
+            <div className={output ? 'output_show' : 'output'}>
+                <textarea className="output_show"></textarea>
             </div>
         </div>
     );
