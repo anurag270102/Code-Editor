@@ -2,6 +2,7 @@ import { useState } from 'react';
 import {v4 as uuidv4} from 'uuid';
 import toast from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
+
 const Home = () => {
     const navigate=useNavigate();
     const [roomid,setroomid]=useState("");
@@ -29,6 +30,7 @@ const Home = () => {
             joinroom();
         }
     }
+
     return ([
         <div key={1212} className="homePageWrapper">
             <div className="fromWrapper">

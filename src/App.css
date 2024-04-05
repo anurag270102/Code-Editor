@@ -1,3 +1,4 @@
+
 .homePageWrapper {
   display: flex;
   align-items: center;
@@ -107,7 +108,7 @@ footer a:hover {
 .clientlist {
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: start;
   flex-wrap: wrap;
   gap: 20px;
   overflow-y: hidden;
@@ -164,6 +165,7 @@ footer a:hover {
   display: flex;
   margin-bottom: 30px;
 }
+
 .runbtn:hover {
   background: #000;
   color: #03FA6E;
@@ -187,15 +189,17 @@ footer a:hover {
 
 .play-icon:hover {
   transform: scale(1.5);
-  
+
 }
-.btn_run_content{
+
+.btn_run_content {
   font-weight: 600;
   padding: 1px;
   margin: 0px auto;
   display: flex;
   align-items: center;
 }
+
 .aside {
   width: 200px;
   /* adjust width as needed */
@@ -225,30 +229,86 @@ footer a:hover {
   margin-bottom: 20px;
   /* adjust margin as needed */
 }
-.output{
-  display: none;
-}
-.output_show{
-  display: block;
-  background: linear-gradient(in hsl longer hue, white, gray);
-  height: 120px;
+
+
+
+.output_show {
+  height: 250px;
   color: #3f3f3f;
   font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
   font-size: medium;
   letter-spacing: 1px;
-  /* overflow-x: hidden; */
-  width: 100%;
+  width: 50%;
+  margin: 10px 424px;
   overflow: hidden;
-  display: flex;
 }
-.output_heading{
+
+.output_heading {
   font-size: 30px;
   text-align: center;
   color: #01c355;
   letter-spacing: normal;
   transition: all 2s ease-in;
 }
-.output_show:focus{
+
+.output_show:focus {
   outline: none;
   border: none;
+}
+
+.button-5 {
+
+  align-items: center;
+  background-clip: padding-box;
+  background-color: #fa6400;
+  border: 1px solid transparent;
+  border-radius: .25rem;
+  box-shadow: rgba(0, 0, 0, 0.02) 0 1px 3px 0;
+  box-sizing: border-box;
+  color: #fff;
+  cursor: pointer;
+  display: inline-flex;
+  font-family: system-ui, -apple-system, system-ui, "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  justify-content: center;
+  line-height: 1.25;
+  margin:auto 48% ;
+  min-height: 3rem;
+  padding: calc(.875rem - 1px) calc(1.5rem - 1px);
+  position: relative;
+  text-decoration: none;
+  transition: all 250ms;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  vertical-align: baseline;
+  width: auto;
+}
+
+.button-5:hover,
+.button-5:focus {
+  background-color: #fb8332;
+  box-shadow: rgba(0, 0, 0, 0.1) 0 4px 12px;
+}
+
+.button-5:hover {
+  transform: translateY(-1px);
+}
+
+.button-5:active {
+  background-color: #c85000;
+  box-shadow: rgba(0, 0, 0, .06) 0 2px 4px;
+  transform: translateY(0);
+}
+.theme-btn{
+  margin-bottom: 20px;
+  font-weight: 700;
+}
+.theme-btn:hover{
+  background: #000;
+  color: #03FA6E;
+  font-weight: 500;
+  fill: #01c355;
+  transition: all 0.4s ease-in-out;
 }
