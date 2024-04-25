@@ -5,22 +5,14 @@ const server = http.createServer(app);
 const { Server } = require('socket.io');
 const ACTIONS = require('./src/action');
 // var path = require('path');
-var bodyparser = require('body-parser');
-var complier = require('compilex');
+
 
 const io = new Server(server);
-app.use(bodyparser());
-var options = { stats: true };
-complier.init(options);
 
-app.get('/editor/:roomId',(req,res)=>{
-    console.log(req);
-    console.log(res);
-})
-app.post('/editor/:roomId',(req,res)=>{
-    console.log(req);
-    console.log(res);
-})
+var options = { stats: true };
+
+
+
 const userSocketMap = {};
 
 function getsallconnectedclients(roomId) {

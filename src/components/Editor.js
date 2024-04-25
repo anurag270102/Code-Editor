@@ -30,7 +30,7 @@ const Editor = ({ socketRef, roomId,oncodechange }) => {
                 textarea,
                 {
                     mode: { name: "javascript", json: true },
-                    theme: 'drakula',
+                    theme: 'dracula',
                     autoCloseTags: true,
                     autoCloseBrackets: true,
                     lineNumbers: true,

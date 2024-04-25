@@ -15,6 +15,8 @@ const EditorHome = () => {
     const { roomId } = useParams();
     const [clients, setclients] = useState([]);
     const codeRef = useRef(null);
+    const [isOpen, setIsOpen] = useState(false);
+
     useEffect(() => {
         const init = async () => {
             try {
@@ -86,9 +88,52 @@ const EditorHome = () => {
         navigate('/');
     }
 
-   
+    const toggleMenu = () => {
+        setIsOpen(!isOpen);
+    };
     return (<>
-        
+        <div className="navbar" style={{ padding: '10px' }}>
+            <h1 style={{ margin: '0' }}>StreamCode</h1>
+            <div className="hamburger-menu" onClick={toggleMenu}>
+                {isOpen ? (
+                    // Close icon
+                    <div className="inside_navbar">
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="30"
+                            height="30"
+                            viewBox="0 0 24 24"
+                            fill="#fff"
+                        >
+                            <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z" />
+                        </svg>
+                        <div style={{ display: 'flex', justifyContent: 'space-around', alignItems: 'center', paddingBottom: '10px' }} >
+                            <button className="btn " onClick={copyRoomID}>Copy Room ID</button>
+                            <button className="btn " onClick={LeaveRoom}>Leave</button>
+                        </div>
+                        <h3>Connected</h3>
+                        <div className="clientlist">
+                            {
+                                clients.map(client =>
+                                    <Client username={client.username} key={client.socketId + 7767}></Client>
+                                )
+                            }
+                        </div>
+                    </div>
+                ) : (
+                    // Hamburger icon
+                    <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="30"
+                        height="30"
+                        viewBox="0 0 24 24"
+                        fill="#fff"
+                    >
+                        <path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z" />
+                    </svg>
+                )}
+            </div>
+        </div>
         <div className="mainwrap">
             <div className={"aside"}>
                 <div className="asideinner">

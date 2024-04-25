@@ -60,7 +60,6 @@ footer a {
 .joinbtn {
   background: #03FA6E;
   width: 100px;
-  margin-left: 72%;
 }
 
 .joinbtn:hover,
@@ -212,21 +211,23 @@ footer a:hover {
   /* adjust margin as needed */
 }
 
-.navbar {
-  display: none;
-}
 
-@media screen and (max-width: 435px) {
+
+@media   (max-width: 426px)  {
   .aside {
     display: none;
   }
-
   .editorpage {
     width: 100vw;
   }
-
-  .navbar {
+  .navbar{
     display: block;
+  }
+}
+
+@media (width>426px) {
+  .navbar{
+    display: none;
   }
 }
 
@@ -235,12 +236,6 @@ footer a:hover {
   --blue: #040607;
 }
 
-/* Reset */
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
 
 
 /* List Styles */
