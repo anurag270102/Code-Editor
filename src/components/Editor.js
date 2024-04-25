@@ -19,9 +19,8 @@ import 'codemirror/addon/edit/closetag';
 import 'codemirror/addon/edit/closebrackets';
 import ACTIONS from "../action";
 
-const Editor = ({ socketRef, roomId,oncodechange,theme }) => {
+const Editor = ({ socketRef, roomId,oncodechange }) => {
    // console.log(socketRef)
-    console.log(`${theme}`);
     const editorRef = useRef(null);
     useEffect(() => {
         // console.log('called');
@@ -31,7 +30,7 @@ const Editor = ({ socketRef, roomId,oncodechange,theme }) => {
                 textarea,
                 {
                     mode: { name: "javascript", json: true },
-                    theme: theme,
+                    theme: 'drakula',
                     autoCloseTags: true,
                     autoCloseBrackets: true,
                     lineNumbers: true,
@@ -66,12 +65,11 @@ const Editor = ({ socketRef, roomId,oncodechange,theme }) => {
                 // eslint-disable-next-line react-hooks/exhaustive-deps
                 socketRef.current.disconnect();
             }
-        })
-    }, [roomId, socketRef, theme]);
+        });
+    }, [roomId, socketRef]);
     return ([
         <textarea id='realtimeeditor' name=""></textarea>
     ])
 
 };
-
 export default Editor;
